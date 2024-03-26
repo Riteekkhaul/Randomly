@@ -1,17 +1,62 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState  } from "react";
 import ReactPlayer from "react-player";
 import peer from "../service/peer";
 import { useSocket } from "../context/SocketProvider";
+import "../App.css";
 
 const RoomPage = () => {
   const socket = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+
+  // chat code
+
+  useEffect(() => {
+    // Listen for incoming messages
+    socket.on("message", (message) => {
+      setMessages([...messages, message]);
+    });
+
+    return () => {
+      socket.off("message");
+    };
+  }, [messages]);
+
+  // useEffect(() => {
+  //   // Listen for incoming messages
+  //   socket.on('message', (message) => {
+  //     setMessages([...messages, { text: message.text, sender: message.sender }]);
+  //   });
+
+  //   // Clean up the socket listener on unmount
+  //   return () => {
+  //     socket.off('message');
+  //   };
+  // }, [messages]);
+
+  const handleSendMessage = () => {
+    socket.emit("sendMessage",  { text: message, sender: 'Me' });
+    setMessage("");
+  };
+
+  
+  // const handleSendMessage = () => {
+  //   if (message.trim() !== '') {
+  //     // Emit the message to the server
+  //     socket.emit('sendMessage', { text: message, sender: 'Me' });
+  //     setMessage('');
+  //   }
+  // };
+
+  // chat code end
 
   const handleUserJoined = useCallback(({ email, id }) => {
-    console.log(`Email ${email} joined room`);
+    console.log(`Email ${email} joined room with Id : ${id}`);
     setRemoteSocketId(id);
+   // window.localStorage.setItem('socketId',id);
   }, []);
 
   const handleCallUser = useCallback(async () => {
@@ -110,35 +155,80 @@ const RoomPage = () => {
   ]);
 
   return (
-    <div>
-      <h1>Room Page</h1>
-      <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
+    <div className="container">
+      <div className="left">
+        <div className="row">
+         <h5>{remoteSocketId ? "Connected" : "No one in room"}</h5>
+         {myStream && <button onClick={sendStreams}>Send Stream</button>}
+         {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
+        </div>
+      
       {myStream && (
-        <>
-          <h1>My Stream</h1>
+        <div className="stream-container">
+          <p>You</p>
           <ReactPlayer
+            className="video-stream"
             playing
             muted
-            height="100px"
-            width="200px"
+            height="200px"
+            width="400px"
             url={myStream}
           />
-        </>
+        </div>
       )}
       {remoteStream && (
-        <>
-          <h1>Remote Stream</h1>
+        <div className="stream-container">
+          <p>Stranger</p>
           <ReactPlayer
+            className="video-stream"
             playing
             muted
-            height="100px"
-            width="200px"
+            height="200px"
+            width="400px"
             url={remoteStream}
           />
-        </>
+        </div>
       )}
+      </div>
+      
+      <div className="right">
+        <div className="chat-container" >
+          <div className="chat-messages">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`message ${
+                  message.user === remoteSocketId ? "received" : "sent"  //{message.user}
+                }`}
+              >
+                <p className="message-text"><b>{remoteSocketId===message.user?"Stranger : ":"You : "}</b>{message.text}</p> 
+              </div>
+            ))}
+          </div>
+          {/* {messages.map((msg, index) => (
+            <p key={index}>
+              {msg.user}: {msg.text}
+            </p>
+          ))} */}
+        </div>
+        
+        <div className="input-container">
+          <button className="skip-button" >{" "} Skip{" "} </button>
+          <input
+            type="text"
+            className="input-text"
+            placeholder="Type your message..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button className="send-button" onClick={handleSendMessage}>
+            {" "}
+            Send{" "}
+          </button>
+        </div>
+      </div>
+
+
     </div>
   );
 };
