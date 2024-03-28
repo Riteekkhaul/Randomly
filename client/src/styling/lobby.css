@@ -1,6 +1,20 @@
+.homepage{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0; /* Remove default body margin */
+}
+.button-container{
+  display: flex;
+}
+.btntext{
+  margin: 10px 10px;
+  font-weight: bold;
+}
 .text-chat-button,
 .video-chat-button {
-  display: inline-block;
+  display: flex;
   padding: 10px 20px;
   margin: 10px;
   border: 2px solid #007bff; /* blue border */
@@ -17,3 +31,4 @@
   background-color: #ffffff ;/* blue background on hover */
   color:#007bff; /* white text color on hover */
 }
+

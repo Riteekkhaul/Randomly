@@ -52,27 +52,29 @@ const LobbyScreen = () => {
   return (
     <div>
       <div>
-        <h1>Lobby</h1>
-
         <form onSubmit={handleSubmitForm}>
-          <label htmlFor="email">Interest</label>
-          <input
-            type="text"
-            id="interest"
-            value={interest}
-            onChange={(e) => setInterest(e.target.value)}
-          />
-          <br />
-          <label htmlFor="Area">Area</label>
-          <input
-            type="text"
-            id="Area"
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-          />
-          <br />
           <div className="homepage">
             <h1>Welcome to Randomly</h1>
+            <div>
+              <label htmlFor="email">Interest (optional) </label>
+              <input
+                type="text"
+                id="interest"
+                value={interest}
+                onChange={(e) => setInterest(e.target.value)}
+              />
+              <br />
+              <label htmlFor="Area">Area ( optional ) </label>
+              <input
+                type="text"
+                id="Area"
+                value={area}
+                onChange={(e) => setArea(e.target.value)}
+              />
+              <br />
+              <br />
+              <br />
+            </div>
             <div className="button-container">
               <button className="text-chat-button" type="submit">
                 <img
@@ -81,7 +83,7 @@ const LobbyScreen = () => {
                   height="80px"
                   width="120px"
                 />
-                Text Chat
+                <p className="btntext">Text  <br /> Chat </p> 
               </button>
               <button className="video-chat-button" type="submit">
                 <img
@@ -90,7 +92,7 @@ const LobbyScreen = () => {
                   height="80px"
                   width="120px"
                 />
-                Video Chat
+                <p className="btntext" >Video <br /> Chat </p> 
               </button>
             </div>
           </div>
