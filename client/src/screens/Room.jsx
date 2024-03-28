@@ -25,38 +25,15 @@ const RoomPage = () => {
     };
   }, [messages]);
 
-  // useEffect(() => {
-  //   // Listen for incoming messages
-  //   socket.on('message', (message) => {
-  //     setMessages([...messages, { text: message.text, sender: message.sender }]);
-  //   });
-
-  //   // Clean up the socket listener on unmount
-  //   return () => {
-  //     socket.off('message');
-  //   };
-  // }, [messages]);
 
   const handleSendMessage = () => {
-    socket.emit("sendMessage",  { text: message, sender: 'Me' });
+    socket.emit("sendMessage",  { text: message});
     setMessage("");
   };
 
-  
-  // const handleSendMessage = () => {
-  //   if (message.trim() !== '') {
-  //     // Emit the message to the server
-  //     socket.emit('sendMessage', { text: message, sender: 'Me' });
-  //     setMessage('');
-  //   }
-  // };
-
-  // chat code end
-
-  const handleUserJoined = useCallback(({ email, id }) => {
-    console.log(`Email ${email} joined room with Id : ${id}`);
+  const handleUserJoined = useCallback((data) => {
+     const {id} = data;
     setRemoteSocketId(id);
-   // window.localStorage.setItem('socketId',id);
   }, []);
 
   const handleCallUser = useCallback(async () => {
