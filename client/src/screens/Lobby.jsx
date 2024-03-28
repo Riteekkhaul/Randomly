@@ -15,32 +15,35 @@ const LobbyScreen = () => {
   const socket = useSocket();
   const navigate = useNavigate();
 
-  const handleSubmitForm = useCallback(
+  const handleVideoChatClick = useCallback(
     (e) => {
       e.preventDefault();
-      //  socket.emit("room:join", { email, room });
-      socket.emit("room:join", { interest, area });
+      socket.emit("room:join", { interest, area, type:"Video" });
+    },
+    [interest, area, socket]
+  );
+
+  const handleTextChatClick = useCallback(
+    (e) => {
+      e.preventDefault();
+      socket.emit("room:join", { interest, area , type:"Text"});
     },
     [interest, area, socket]
   );
 
   const handleJoinRoom = useCallback(
     (data) => {
-      // const { email, room } = data;
-      navigate(`/room/${data}`);
+      const { type, roomName } = data;
+      console.log("chat Type:",type)
+      if(type=="Text"){
+        navigate(`/room/text/${roomName}`);
+      }else{
+        navigate(`/room/video/${roomName}`);
+      }
     },
     [navigate]
   );
 
-  const handleTextChatClick = () => {
-    // Handle click event for text chat button
-    console.log("Text chat button clicked");
-  };
-
-  const handleVideoChatClick = () => {
-    // Handle click event for video chat button
-    console.log("Video chat button clicked");
-  };
 
   useEffect(() => {
     socket.on("room:join", handleJoinRoom);
@@ -52,7 +55,6 @@ const LobbyScreen = () => {
   return (
     <div>
       <div>
-        <form onSubmit={handleSubmitForm}>
           <div className="homepage">
             <h1>Welcome to Randomly</h1>
             <div>
@@ -76,7 +78,7 @@ const LobbyScreen = () => {
               <br />
             </div>
             <div className="button-container">
-              <button className="text-chat-button" type="submit">
+              <button className="text-chat-button" onClick={handleTextChatClick} >
                 <img
                   src={textChat}
                   alt="Text Chat"
@@ -85,7 +87,7 @@ const LobbyScreen = () => {
                 />
                 <p className="btntext">Text  <br /> Chat </p> 
               </button>
-              <button className="video-chat-button" type="submit">
+              <button className="video-chat-button" onClick={handleVideoChatClick} >
                 <img
                   src={videoChat}
                   alt="Video Chat"
@@ -96,7 +98,6 @@ const LobbyScreen = () => {
               </button>
             </div>
           </div>
-        </form>
       </div>
     </div>
   );

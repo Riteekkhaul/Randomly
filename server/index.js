@@ -16,7 +16,7 @@ io.on("connection", (socket) => {
 
   socket.on("room:join", (data) => {
 
-    const { interest, area } = data;
+    const { interest, area,type } = data;
 
     room = rooms.find((r) => r.users.length < 2);   // Find or create a new room with UUID
     if (!room) {
@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
 
     activeUsers[socket.id] = room.name;
   
-    io.to(socket.id).emit("room:join", room.name);  // for redirection 
+    io.to(socket.id).emit("room:join",{ roomName: room.name, type});  // for redirection 
     socket.to(room.name).emit("user:joined", { id: socket.id });      // Notify other users in the room
   });
 
