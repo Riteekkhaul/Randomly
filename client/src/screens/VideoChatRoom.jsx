@@ -187,11 +187,6 @@ const RoomPage = () => {
               </div>
             ))}
           </div>
-          {/* {messages.map((msg, index) => (
-            <p key={index}>
-              {msg.user}: {msg.text}
-            </p>
-          ))} */}
         </div>
         
         <div className="input-container">
@@ -208,12 +203,11 @@ const RoomPage = () => {
             Send{" "}
           </button>
         </div>
-
-        <div className="gamebox">
-         <TicTacToe />
-        </div>
-      
       </div>
+    
+     <div className="gamebox">
+         <TicTacToe />
+     </div>
     </div>
   );
 };
