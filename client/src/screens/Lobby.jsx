@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
+import AgeVerificationModal from "../components/AgeVerificationModal";
 import textChat from "../images/text-chat.jpg";
 import videoChat from "../images/video-chat.png";
 import "../styling/lobby.css";
@@ -99,6 +100,7 @@ const LobbyScreen = () => {
             </div>
           </div>
       </div>
+      <AgeVerificationModal />
     </div>
   );
 };

@@ -164,8 +164,8 @@ const RoomPage = () => {
                 className="video-stream"
                 playing
                 muted
-                height="400px"
-                width="500px"
+                height="420px"
+                width="520px"
                 url={remoteStream}
               />
             </div>

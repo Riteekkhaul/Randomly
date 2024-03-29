@@ -43,14 +43,14 @@
 .local-stream {
   position: absolute;
   border-radius: 8px;
-  left:343px;
-  bottom:120px;
+  left:364px;
+  bottom:103px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 1; /* Ensure local stream is above remote stream */
 }
 
 .video-stream:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .chat-container {
