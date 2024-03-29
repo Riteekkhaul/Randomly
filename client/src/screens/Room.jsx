@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState  } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import peer from "../service/peer";
 import { useSocket } from "../context/SocketProvider";
@@ -25,14 +25,13 @@ const RoomPage = () => {
     };
   }, [messages]);
 
-
   const handleSendMessage = () => {
-    socket.emit("sendMessage",  { text: message});
+    socket.emit("sendMessage", { text: message });
     setMessage("");
   };
 
   const handleUserJoined = useCallback((data) => {
-     const {id} = data;
+    const { id } = data;
     setRemoteSocketId(id);
   }, []);
 
@@ -132,81 +131,89 @@ const RoomPage = () => {
   ]);
 
   return (
-    <div className="container">
-      <div className="left">
-        <div className="row">
-         <h5>{remoteSocketId ? "Connected" : "No one in room"}</h5>
-         {myStream && <button onClick={sendStreams}>Send Stream</button>}
-         {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
-        </div>
-      
-      {myStream && (
-        <div className="stream-container">
-          <p>You</p>
-          <ReactPlayer
-            className="video-stream"
-            playing
-            muted
-            height="200px"
-            width="400px"
-            url={myStream}
-          />
-        </div>
-      )}
-      {remoteStream && (
-        <div className="stream-container">
-          <p>Stranger</p>
-          <ReactPlayer
-            className="video-stream"
-            playing
-            muted
-            height="200px"
-            width="400px"
-            url={remoteStream}
-          />
-        </div>
-      )}
-      </div>
-      
-      <div className="right">
-        <div className="chat-container" >
-          <div className="chat-messages">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`message ${
-                  message.user === remoteSocketId ? "received" : "sent"  //{message.user}
-                }`}
-              >
-                <p className="message-text"><b>{remoteSocketId===message.user?"Stranger : ":"You : "}</b>{message.text}</p> 
-              </div>
-            ))}
+    <>
+      <div className="navBar">NavBar</div>
+      <div className="container">
+        <div className="left">
+          <div className="row">
+            <h5>{remoteSocketId ? "Connected" : "No one in room"}</h5>
+            {myStream && <button onClick={sendStreams}>Send Stream</button>}
+            {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
           </div>
-          {/* {messages.map((msg, index) => (
+
+          {myStream && (
+            <div className="stream-container">
+              <p>You</p>
+              <ReactPlayer
+                className="video-stream"
+                playing
+                muted
+                height="200px"
+                width="400px"
+                url={myStream}
+              />
+            </div>
+          )}
+          {remoteStream && (
+            <div className="stream-container">
+              <p>Stranger</p>
+              <ReactPlayer
+                className="video-stream"
+                playing
+                muted
+                height="200px"
+                width="400px"
+                url={remoteStream}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="right">
+          <div className="chat-container">
+            <div className="chat-messages">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`message ${
+                    message.user === remoteSocketId ? "received" : "sent" //{message.user}
+                  }`}
+                >
+                  <p className="message-text">
+                    <b>
+                      {remoteSocketId === message.user
+                        ? "Stranger : "
+                        : "You : "}
+                    </b>
+                    {message.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+            {/* {messages.map((msg, index) => (
             <p key={index}>
               {msg.user}: {msg.text}
             </p>
           ))} */}
-        </div>
-        
-        <div className="input-container">
-          <button className="skip-button" >{" "} Skip{" "} </button>
-          <input
-            type="text"
-            className="input-text"
-            placeholder="Type your message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button className="send-button" onClick={handleSendMessage}>
-            {" "}
-            Send{" "}
-          </button>
+          </div>
+
+          <div className="input-container">
+            <button className="skip-button"> Skip </button>
+            <input
+              type="text"
+              className="input-text"
+              placeholder="Type your message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button className="send-button" onClick={handleSendMessage}>
+              {" "}
+              Send{" "}
+            </button>
+          </div>
         </div>
       </div>
-
-
-    </div>
+    </>
   );
 };
 
