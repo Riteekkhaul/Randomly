@@ -3,6 +3,8 @@ import ReactPlayer from "react-player";
 import peer from "../service/peer";
 import { useSocket } from "../context/SocketProvider";
 import TicTacToe from "../games/TicTacToe/TicTacToe";
+import Navbar from "../components/NavBar";
+import axios from "axios";
 import "../App.css";
 
 const RoomPage = () => {
@@ -12,6 +14,9 @@ const RoomPage = () => {
   const [remoteStream, setRemoteStream] = useState();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [query, setQuery] = useState("");
+  const [gifList, setGifList] = useState([]);
+  const [isGifModalVisible, setIsGifModalVisible] = useState(false);
 
   // chat code
 
@@ -26,9 +31,33 @@ const RoomPage = () => {
     };
   }, [messages]);
 
+  const searchGifs = async () => {
+    const options = {
+      method: "GET",
+      url: "https://api.giphy.com/v1/gifs/search",
+      params: {
+        q: query,
+        limit: 20,
+        api_key: process.env.REACT_APP_API_KEY,
+      },
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log(response.data.data);
+      setGifList(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSendMessage = () => {
     socket.emit("sendMessage", { text: message });
     setMessage("");
+  };
+
+  const handleGifButtonClick = () => {
+    setIsGifModalVisible(!isGifModalVisible); // Toggle the visibility of the GIF modal
   };
 
   const handleUserJoined = useCallback((data) => {
@@ -137,7 +166,9 @@ const RoomPage = () => {
 
   return (
     <>
-      <div className="navBar">NavBar</div>
+      <div className="navBar">
+       <Navbar />
+      </div>
       <div className="container">
         <div className="left">
           <div className="row">
@@ -153,7 +184,7 @@ const RoomPage = () => {
                 playing
                 muted
                 height="100px"
-                width="200px"
+                width="150px"
                 url={myStream}
               />
             </div>
@@ -164,8 +195,8 @@ const RoomPage = () => {
                 className="video-stream"
                 playing
                 muted
-                height="420px"
-                width="520px"
+                height="450px"
+                width="620px"
                 url={remoteStream}
               />
             </div>
@@ -204,6 +235,9 @@ const RoomPage = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
+             <button className="gifbtn" onClick={handleGifButtonClick}>
+              GIF
+            </button>
             <button className="send-button" onClick={handleSendMessage}>
               {" "}
               Send{" "}
@@ -211,9 +245,40 @@ const RoomPage = () => {
           </div>
         </div>
 
-        <div className="gamebox">
-          <TicTacToe />
+        {
+        isGifModalVisible &&(
+          <div className="gifModal">
+          <div>
+            <input
+              className="queryInput"
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <button className="searchbtn" onClick={searchGifs}>
+              Search
+            </button>
+            <button className="crossbtn" onClick={handleGifButtonClick}>
+               ×
+            </button>
+            <div className="gif">
+              {gifList.map((gif, index) => (
+                <div className="gif__image-container" key={index}>
+                  <img
+                    className="gif__image"
+                    src={gif.images.fixed_height.url}
+                    alt="gif"
+                    height="80px"
+                    width="80px"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+        )
+      }
+
       </div>
     </>
   );

@@ -4,9 +4,35 @@
   justify-content: center;
   align-items: center;
   margin: 0; /* Remove default body margin */
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/back.jpg'); /* Replace 'your-photo-url.jpg' with the URL of your photo */
+  background-size: cover; /* Cover the entire background */
+  background-position: center; /* Center the background */
+  background-repeat: no-repeat; /* Do not repeat the background */
+}
+
+.welcome{
+  color: white;
+}
+.userInputCon{
+  display: flex;
+}
+.userInputCon label{
+ margin: 10px;
+ color: white;
+}
+.selectStyle{
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 200px;
+  margin-bottom: 20px;
 }
 .button-container{
   display: flex;
+  justify-content: center;
 }
 .btntext{
   margin: 10px 10px;
@@ -32,3 +58,16 @@
   color:#007bff; /* white text color on hover */
 }
 
+.marqueeStyle{
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #4864fd;
+  background-color: orange;
+  padding: 10px,
+}
+.serviceSection{
+  height: 150px;
+}
+.footer{
+  height: 100px;
+}

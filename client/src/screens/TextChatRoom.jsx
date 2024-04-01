@@ -3,6 +3,9 @@ import ReactPlayer from "react-player";
 import peer from "../service/peer";
 import { useSocket } from "../context/SocketProvider";
 import axios from "axios";
+import Navbar from "../components/NavBar";
+import TicTacToe from "../games/TicTacToe/TicTacToe";
+
 import "../App.css";
 
 const RoomPage = () => {
@@ -12,6 +15,7 @@ const RoomPage = () => {
   const [messages, setMessages] = useState([]);
   const [query, setQuery] = useState("");
   const [gifList, setGifList] = useState([]);
+  const [isGifModalVisible, setIsGifModalVisible] = useState(false);
 
   useEffect(() => {
     // Listen for incoming messages
@@ -27,6 +31,10 @@ const RoomPage = () => {
   const handleSendMessage = () => {
     socket.emit("sendMessage", { text: message });
     setMessage("");
+  };
+
+  const handleGifButtonClick = () => {
+    setIsGifModalVisible(!isGifModalVisible); // Toggle the visibility of the GIF modal
   };
 
   const handleUserJoined = useCallback((data) => {
@@ -63,68 +71,89 @@ const RoomPage = () => {
   }, [socket, handleUserJoined]);
 
   return (
-    <div className="container">
-      <div className="left">
-        <div>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <button onClick={searchGifs}>Search</button>
-          <div className="gif">
-            {gifList.map((gif, index) => (
-              <div className="gif__image-container" key={index}>
-                <img
-                  className="gif__image"
-                  src={gif.images.fixed_height.url}
-                  alt="gif"
-                  height="60px"
-                  width="60px"
-                />
-              </div>
-            ))}
+    <>
+      <div className="navBar">
+        <Navbar />
+      </div>
+      <div className="container">
+
+      {
+        isGifModalVisible &&(
+          <div className="gifModal">
+          <div>
+            <input
+              className="queryInput"
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <button className="searchbtn" onClick={searchGifs}>
+              Search
+            </button>
+            <button className="crossbtn" onClick={handleGifButtonClick}>
+               ×
+            </button>
+            <div className="gif">
+              {gifList.map((gif, index) => (
+                <div className="gif__image-container" key={index}>
+                  <img
+                    className="gif__image"
+                    src={gif.images.fixed_height.url}
+                    alt="gif"
+                    height="80px"
+                    width="80px"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="right">
-        <div className="chat-container">
-          <div className="chat-messages">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`message ${
-                  message.user === remoteSocketId ? "received" : "sent" //{message.user}
-                }`}
-              >
-                <p className="message-text">
-                  <b>
-                    {remoteSocketId === message.user ? "Stranger : " : "You : "}
-                  </b>
-                  {message.text}
-                </p>
-              </div>
-            ))}
+        )
+      }
+
+        <div className="chatSection">
+          <div className="chat-container">
+            <div className="chat-messages">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`message ${
+                    message.user === remoteSocketId ? "received" : "sent" //{message.user}
+                  }`}
+                >
+                  <p className="message-text">
+                    <b>
+                      {remoteSocketId === message.user
+                        ? "Stranger : "
+                        : "You : "}
+                    </b>
+                    {message.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="input-container">
+            <button className="skip-button"> Skip </button>
+            <input
+              type="text"
+              className="input-text"
+              placeholder="Type your message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button className="gifbtn" onClick={handleGifButtonClick}>
+              GIF
+            </button>
+            <button className="send-button" onClick={handleSendMessage}>
+              {" "}
+              Send{" "}
+            </button>
           </div>
         </div>
 
-        <div className="input-container">
-          <button className="skip-button"> Skip </button>
-          <input
-            type="text"
-            className="input-text"
-            placeholder="Type your message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button className="gifbtn">GIF</button>
-          <button className="send-button" onClick={handleSendMessage}>
-            {" "}
-            Send{" "}
-          </button>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 

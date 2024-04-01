@@ -132,7 +132,7 @@ const RoomPage = () => {
 
   return (
     <>
-      <div className="navBar">NavBar</div>
+      <div className="navBar"><p> Home </p></div>
       <div className="container">
         <div className="left">
           <div className="row">
