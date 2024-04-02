@@ -19,14 +19,6 @@
 .left {
   width: 50%;
 }
-.gifModal{
-  position: absolute;
-  width: 30%;
-  right: 30px;
- bottom: 20px;
-  background-color: rgb(223, 243, 243);
-  border-radius: 10px;
-}
 .chatSection{
   width: 65%;
   padding-top: 20px;
@@ -109,7 +101,7 @@
   margin-left: 10px;
 }
 .queryInput{
-  width: 60%;
+  width: 220px;
   margin: 10px 10px 0px 20px;
   height: 30px;
   border-radius: 10px;
@@ -119,7 +111,8 @@
 }
 .searchbtn{
   border-radius: 10px;
-  padding: 10px;
+  padding: 10px 20px;
+  margin: 0px 5px;
   background-color: #007bff;
   color: white;
   font-weight: bold;
@@ -129,17 +122,23 @@
 }
 .crossbtn{
   border-radius: 10px;
-  padding: 0px 10px;
-  background-color: #ff4800;
-  color: white;
+  color: rgb(10, 10, 10);
   font-weight: bold;
-  font-size: 28px;
+  font-size: 34px;
   border: none;
+  margin-left: 5px;
+  background-color: transparent;
   outline: none;
   cursor: pointer;
-  margin-left: 20px;
 }
-
+.gifModal{
+  position: absolute;
+  width: 400px;
+  right: 30px;
+  bottom: 120px;
+  background-color: rgb(223, 243, 243);
+  border-radius: 10px;
+}
 .gifbtn{
   padding: 10px;
   border-radius: 50%;
@@ -148,18 +147,22 @@
 .gifbtn:hover{
   cursor: pointer;
 }
-
 .gif{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 80%;
+    width: 90%;
+    height: 250px;
+    overflow-y: auto;
     border-color: #007bff;
     border-radius: 10px;
     border-width: 10px;
     padding: 10px;
     background-color: rgb(223, 243, 243);
     margin: 5px 10px;
+}
+.gif__image{
+  cursor: pointer;
 }
 .send-button {
   padding: 8px 20px;

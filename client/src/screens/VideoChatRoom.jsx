@@ -18,7 +18,16 @@ const RoomPage = () => {
   const [gifList, setGifList] = useState([]);
   const [isGifModalVisible, setIsGifModalVisible] = useState(false);
 
+
   // chat code
+
+  function startsWithHttps(str) {
+    // Regular expression pattern to match "https" at the start of the string
+    const pattern = /^https/i; // Case-insensitive match
+  
+    // Test if the string matches the pattern
+    return pattern.test(str);
+  }
 
   useEffect(() => {
     // Listen for incoming messages
@@ -52,7 +61,7 @@ const RoomPage = () => {
   };
 
   const handleSendMessage = () => {
-    socket.emit("sendMessage", { text: message });
+    socket.emit("sendMessage", { text: message }); // sending text message 
     setMessage("");
   };
 
@@ -219,7 +228,9 @@ const RoomPage = () => {
                         ? "Stranger : "
                         : "You : "}
                     </b>
-                    {message.text}
+                    {
+                       startsWithHttps(message.text)?( <img src={message.text} height="70px" width="70px" /> ):( <span>{message.text}</span>   )
+                    }
                   </p>
                 </div>
               ))}
@@ -248,7 +259,6 @@ const RoomPage = () => {
         {
         isGifModalVisible &&(
           <div className="gifModal">
-          <div>
             <input
               className="queryInput"
               type="text"
@@ -263,18 +273,18 @@ const RoomPage = () => {
             </button>
             <div className="gif">
               {gifList.map((gif, index) => (
-                <div className="gif__image-container" key={index}>
+                <div className="gif__image-container" key={index}   >
                   <img
                     className="gif__image"
                     src={gif.images.fixed_height.url}
                     alt="gif"
                     height="80px"
                     width="80px"
+                    onClick={(e) => {setMessage(e.target.src);  console.log(message)}}
                   />
                 </div>
               ))}
             </div>
-          </div>
         </div>
         )
       }
