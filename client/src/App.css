@@ -172,7 +172,10 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
+.spinCon{
+  margin-left: 130px;
+  margin-top: 50px;
+}
 
 .skip-button {
   padding: 8px 20px;
