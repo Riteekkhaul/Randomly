@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
 import peer from "../service/peer";
 import { useSocket } from "../context/SocketProvider";
@@ -19,7 +20,7 @@ const RoomPage = () => {
   const [isGifModalVisible, setIsGifModalVisible] = useState(false);
 
 
-  // chat code
+  const navigate = useNavigate();
 
   function startsWithHttps(str) {
     // Regular expression pattern to match "https" at the start of the string
@@ -91,15 +92,15 @@ const RoomPage = () => {
   }
 
   // Function to execute when "Enter" key is pressed
-function handleKeyPress(event) {
-  if (event.key === "Enter") {
-    // Call your function here
-    handleSendMessage();
-  }
-}
+// function handleKeyPress(event) {
+//   if (event.key === "Enter") {
+//     // Call your function here
+//     handleSendMessage();
+//   }
+// }
 
 // Add event listener to detect key press
-document.addEventListener("keydown", handleKeyPress);
+//document.addEventListener("keydown", handleKeyPress);
 
   const handleGifButtonClick = () => {
     setIsGifModalVisible(!isGifModalVisible); // Toggle the visibility of the GIF modal
@@ -141,6 +142,16 @@ document.addEventListener("keydown", handleKeyPress);
       peer.peer.addTrack(track, myStream);
     }
   }, [myStream]);
+
+  const handleSkipRoom = () => {
+    socket.emit('skipRoom'); // Emit an event to the server to skip the room
+  };
+
+  const handleExitConversation = () => {
+    // Logic to leave the room and exit conversation
+    socket.emit("exitConversation"); // Send a message to the server to handle user leaving the room
+    navigate('/');
+  }
 
   const handleCallAccepted = useCallback(
     ({ from, ans }) => {
@@ -258,6 +269,7 @@ document.addEventListener("keydown", handleKeyPress);
       remoteSocketId?(
         <div className="right">
           <div className="chat-container">
+            <div className="roomDetail"> <span>You are now Connected to a random User!</span> <button onClick={handleExitConversation} >Exit</button> </div>
             <div className="chat-messages">
               {messages.map((message, index) => (
                 <div
@@ -282,7 +294,7 @@ document.addEventListener("keydown", handleKeyPress);
           </div>
 
           <div className="input-container">
-            <button className="skip-button"> Skip </button>
+            <button className="skip-button" onClick={handleSkipRoom} > Skip </button>
             <input
               type="text"
               className="input-text"
