@@ -217,9 +217,9 @@ const RoomPage = () => {
     handleNegoNeedFinal,
   ]);
 
-  // useEffect(() => {
-  //   handleCallUser();
-  // }, [remoteSocketId]);
+  useEffect(() => {
+    handleCallUser();
+  }, [remoteSocketId]);
 
   return (
     <>
@@ -230,11 +230,12 @@ const RoomPage = () => {
         <div className="left">
           <div className="row">
             {
-            remoteSocketId?(
-              <h4>Connected :  <button onClick={handleCallUser}>Start</button>  {myStream && <button onClick={sendStreams}>Send Video </button>} </h4>
-             ):(
-               <h4>Please Wait! We are connecting you to random User</h4>
-              )  
+            remoteSocketId && (
+              <> 
+                {/* <button onClick={handleCallUser}>Start</button>  */}
+                {myStream && <button onClick={sendStreams}>Send Video </button>} 
+              </>
+             ) 
             }
           </div>
 
@@ -250,25 +251,35 @@ const RoomPage = () => {
               />
             </div>
           )}
-          {remoteStream && (
             <div className="stream-container">
+            {remoteStream? (
               <ReactPlayer
                 className="video-stream"
                 playing
                 muted
-                height="450px"
-                width="620px"
+                height="470px"
+                width="640px"
                 url={remoteStream}
               />
+              ):(
+                <div className="tempFrame">
+                  <Spinner />
+                </div>
+              )}
             </div>
-          )}
         </div>
 
-    {
-      remoteSocketId?(
         <div className="right">
           <div className="chat-container">
-            <div className="roomDetail"> <span>You are now Connected to a random User!</span> <button onClick={handleExitConversation} >Exit</button> </div>
+            <div className="roomDetail"> 
+               {
+                 remoteSocketId?(
+                 <> <span>You are now Connected to a random User!</span> <button onClick={handleExitConversation} >Exit</button></>
+                 ):(
+                  <span>Please Wait! We are connecting you to random User...</span>
+                 )
+               }
+            </div>
             <div className="chat-messages">
               {messages.map((message, index) => (
                 <div
@@ -310,12 +321,7 @@ const RoomPage = () => {
             </button>
           </div>
         </div>
-      ):(
-        <Spinner />
-      )
-    }
-        
-
+    
         {
         isGifModalVisible &&(
           <div className="gifModal">
