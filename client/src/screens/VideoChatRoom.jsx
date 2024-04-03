@@ -231,12 +231,11 @@ const RoomPage = () => {
           <div className="row">
             {
             remoteSocketId?(
-              <h4>Connected :  <button onClick={handleCallUser}>Start</button> </h4>
+              <h4>Connected :  <button onClick={handleCallUser}>Start</button>  {myStream && <button onClick={sendStreams}>Send Video </button>} </h4>
              ):(
                <h4>Please Wait! We are connecting you to random User</h4>
               )  
             }
-            {myStream && <button onClick={sendStreams}>Send Your Video Stream</button>}
           </div>
 
           {myStream && (

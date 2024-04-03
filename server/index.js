@@ -72,6 +72,7 @@ io.on("connection", (socket) => {
       // Join the new room
       socket.join(newRoom.name);
       newRoom.users.push(socket.id);
+      socket.to(room.name).emit("user:joined", { id: socket.id }); // Notify other users in the room
       console.log(`User ${socket.id} joined room ${newRoom.name}`);
     }
   });
