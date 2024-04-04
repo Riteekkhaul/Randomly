@@ -225,9 +225,9 @@ const RoomPage = () => {
     handleNegoNeedFinal,
   ]);
 
-  useEffect(() => {
-    handleCallUser();
-  }, [remoteSocketId]);
+  // useEffect(() => {
+  //   handleCallUser();
+  // }, [remoteSocketId]);
 
   return (
     <>
@@ -236,6 +236,18 @@ const RoomPage = () => {
       </div>
       <div className="container">
         <div className="left">
+
+        <div className="row">
+            {
+            remoteSocketId && (
+              <> 
+                <button onClick={handleCallUser}>Start</button> 
+                {myStream && <button onClick={sendStreams}>Send Video </button>} 
+              </>
+             ) 
+            }
+          </div>
+
           {myStream && (
             <div className="stream-container">
               <ReactPlayer
