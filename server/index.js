@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
 
     io.to(socket.id).emit("room:join", { roomName: room.name, type }); // for redirection
     socket.to(room.name).emit("user:joined", { id: socket.id }); // Notify other users in the room
+    io.to(room.name).emit("message", { user: "admin", text: "New User joined!" });
   });
 
 

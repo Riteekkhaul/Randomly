@@ -113,7 +113,7 @@ const RoomPage = () => {
   }, []);
 
   
-  const handleUserLeft = useCallback((data) => {
+  const handleUserLeft = useCallback(() => {
     setRemoteSocketId(null);
     setRemoteStream(null);
   }, []);
