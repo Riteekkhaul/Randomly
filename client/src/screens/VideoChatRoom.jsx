@@ -228,17 +228,6 @@ const RoomPage = () => {
       </div>
       <div className="container">
         <div className="left">
-          <div className="row">
-            {
-            remoteSocketId && (
-              <> 
-                {/* <button onClick={handleCallUser}>Start</button>  */}
-                {myStream && <button onClick={sendStreams}>Send Video </button>} 
-              </>
-             ) 
-            }
-          </div>
-
           {myStream && (
             <div className="stream-container">
               <ReactPlayer
@@ -256,7 +245,7 @@ const RoomPage = () => {
               <ReactPlayer
                 className="video-stream"
                 playing
-                muted
+               
                 height="470px"
                 width="640px"
                 url={remoteStream}
