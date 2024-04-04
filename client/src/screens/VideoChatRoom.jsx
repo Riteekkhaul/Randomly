@@ -163,7 +163,7 @@ const RoomPage = () => {
     ({ from, ans }) => {
       peer.setLocalDescription(ans);
       console.log("Call Accepted!");
-      sendStreams();
+    //  sendStreams();
     },
     [sendStreams]
   );
@@ -225,9 +225,9 @@ const RoomPage = () => {
     handleNegoNeedFinal,
   ]);
 
-  // useEffect(() => {
-  //   handleCallUser();
-  // }, [remoteSocketId]);
+  useEffect(() => {
+    handleCallUser();
+  }, [remoteSocketId]);
 
   return (
     <>
@@ -241,7 +241,6 @@ const RoomPage = () => {
             {
             remoteSocketId && (
               <> 
-                <button onClick={handleCallUser}>Start</button> 
                 {myStream && <button onClick={sendStreams}>Send Video </button>} 
               </>
              ) 
