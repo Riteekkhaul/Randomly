@@ -94,6 +94,7 @@ io.on("connection", (socket) => {
             text: `Connected User has left the room`,
           });
           delete activeUsers[socket.id];
+          io.to(room.name).emit("user:left");
           // If no users left in the room, remove the room
           if (room.users.length === 0) {
             rooms.splice(i, 1);

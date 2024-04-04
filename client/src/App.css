@@ -111,7 +111,9 @@
 .received {
   background-color: #EFEFEF;
 }
-
+.admin{
+  color: #f7783e;
+}
 .message-text {
   margin: 0;
 }

@@ -112,6 +112,12 @@ const RoomPage = () => {
     setRemoteSocketId(id);
   }, []);
 
+  
+  const handleUserLeft = useCallback((data) => {
+    setRemoteSocketId(null);
+    setRemoteStream(null);
+  }, []);
+
   const handleCallUser = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
@@ -195,7 +201,9 @@ const RoomPage = () => {
   }, []);
 
   useEffect(() => {
+
     socket.on("user:joined", handleUserJoined);
+    socket.on("user:left", handleUserLeft);
     socket.on("incomming:call", handleIncommingCall);
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoNeedIncomming);
@@ -273,15 +281,11 @@ const RoomPage = () => {
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`message ${
-                    message.user === remoteSocketId ? "received" : "sent" //{message.user}
-                  }`}
+                  className={`message ${message.user === "admin" ? "admin" : message.user === remoteSocketId ? "received" : "sent"}`}
                 >
                   <p className="message-text">
                     <b>
-                      {remoteSocketId === message.user
-                        ? "Stranger : "
-                        : "You : "}
+                    {message.user === "admin" ? "admin : " : remoteSocketId === message.user ? "Stranger : " : "You : "}
                     </b>
                     {
                        startsWithHttps(message.text)?( <img src={message.text} height="70px" width="70px" /> ):( <span>{message.text}</span>   )
