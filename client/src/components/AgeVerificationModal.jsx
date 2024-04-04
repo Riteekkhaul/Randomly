@@ -48,4 +48,4 @@ const AgeVerificationModal = () => {
   );
 };
 
-export default AgeVerificationModal;
+export default AgeVerificationModal
