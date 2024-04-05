@@ -94,7 +94,6 @@ const RoomPage = () => {
   }
 
   // Function to execute when "Enter" key is pressed
-
 const handleKeyPress = (event) => {
   if (event.key === 'Enter') {
     handleSendMessage();
