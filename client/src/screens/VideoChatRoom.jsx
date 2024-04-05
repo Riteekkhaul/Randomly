@@ -88,19 +88,18 @@ const RoomPage = () => {
   const handleSendGIF = (e) => {
     const gifSrc = e.target.src;
     setMessage(gifSrc);
-    //handleSendMessage();
+   if(message){
+    handleSendMessage();
+   }
   }
 
   // Function to execute when "Enter" key is pressed
-// function handleKeyPress(event) {
-//   if (event.key === "Enter") {
-//     // Call your function here
-//     handleSendMessage();
-//   }
-// }
 
-// Add event listener to detect key press
-//document.addEventListener("keydown", handleKeyPress);
+const handleKeyPress = (event) => {
+  if (event.key === 'Enter') {
+    handleSendMessage();
+  }
+};
 
   const handleGifButtonClick = () => {
     setIsGifModalVisible(!isGifModalVisible); // Toggle the visibility of the GIF modal
@@ -153,6 +152,14 @@ const RoomPage = () => {
     socket.emit('skipRoom'); // Emit an event to the server to skip the room
   };
 
+  const handleSkipNavigate=useCallback(
+    (data) => {
+      const { roomName } = data;
+        navigate(`/room/video/${roomName}`);
+    },
+    [navigate]
+  );
+
   const handleExitConversation = () => {
     // Logic to leave the room and exit conversation
     socket.emit("exitConversation"); // Send a message to the server to handle user leaving the room
@@ -163,7 +170,7 @@ const RoomPage = () => {
     ({ from, ans }) => {
       peer.setLocalDescription(ans);
       console.log("Call Accepted!");
-    //  sendStreams();
+      //sendStreams();
     },
     [sendStreams]
   );
@@ -204,6 +211,7 @@ const RoomPage = () => {
 
     socket.on("user:joined", handleUserJoined);
     socket.on("user:left", handleUserLeft);
+    socket.on("room:skip:join", handleSkipNavigate);
     socket.on("incomming:call", handleIncommingCall);
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoNeedIncomming);
@@ -315,6 +323,7 @@ const RoomPage = () => {
               placeholder="Type your message..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyPress}
             />
              <button className="gifbtn" onClick={handleGifButtonClick}>
               GIF
