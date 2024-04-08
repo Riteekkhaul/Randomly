@@ -5,7 +5,7 @@ const DarkModeContext = createContext(null);
 export const useDarkMode = () => useContext(DarkModeContext);
 
 export const DarkModeProvider = (props) => {
-    const [darkMode, setDarkMode] = useState(true);
+    const [darkMode, setDarkMode] = useState(false);
   
     const toggleDarkMode = useCallback(() => {
       setDarkMode(prevMode => !prevMode);

@@ -22,6 +22,13 @@ const RoomPage = () => {
   const [gifList, setGifList] = useState([]);
   const [isGifModalVisible, setIsGifModalVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(true); // Open by default
+  const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
+
+  const videoWidth = deviceWidth <= 767 ? '320px' : '640px';
+  const videoHeight = deviceWidth <= 767 ? '320px' : '470px';
+  const MyvideoWidth = deviceWidth <= 767 ? '120px' : '150px';
+  const MyvideoHeight = deviceWidth <= 767 ? '120px' : '100px';
+
 
   const messagesEndRef = useRef(null);
 
@@ -165,6 +172,11 @@ const handleKeyPress = (event) => {
     [navigate]
   );
 
+   // Function to handle incoming remote stream
+   const handleRemoteStream = (stream) => {
+    setIsOpen(true);
+  };
+
   const handleExitConversation = () => {
     // Logic to leave the room and exit conversation
     socket.emit("exitConversation"); // Send a message to the server to handle user leaving the room
@@ -175,7 +187,7 @@ const handleKeyPress = (event) => {
     ({ from, ans }) => {
       peer.setLocalDescription(ans);
       console.log("Call Accepted!");
-      //sendStreams();
+    //  sendStreams();
     },
     [sendStreams]
   );
@@ -221,6 +233,7 @@ const handleKeyPress = (event) => {
     socket.on("user:joined", handleUserJoined);
     socket.on("user:left", handleUserLeft);
     socket.on("room:skip:join", handleSkipNavigate);
+    socket.on('remoteStream', handleRemoteStream);
     socket.on("incomming:call", handleIncommingCall);
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoNeedIncomming);
@@ -228,6 +241,7 @@ const handleKeyPress = (event) => {
 
     return () => {
       socket.off("user:joined", handleUserJoined);
+      socket.off('remoteStream', handleRemoteStream);
       socket.off("incomming:call", handleIncommingCall);
       socket.off("call:accepted", handleCallAccepted);
       socket.off("peer:nego:needed", handleNegoNeedIncomming);
@@ -245,6 +259,19 @@ const handleKeyPress = (event) => {
   useEffect(() => {
     handleCallUser();
   }, [remoteSocketId]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDeviceWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   return (
     <>
@@ -282,8 +309,8 @@ const handleKeyPress = (event) => {
                 className="video-stream local-stream"
                 playing
                 muted
-                height="100px"
-                width="150px"
+                height={MyvideoHeight}
+                width={MyvideoWidth}
                 url={myStream}
               />
             </div>
@@ -293,9 +320,8 @@ const handleKeyPress = (event) => {
               <ReactPlayer
                 className="video-stream"
                 playing
-               
-                height="470px"
-                width="640px"
+                height={videoHeight}
+                width={videoWidth}
                 url={remoteStream}
               />
               ):(

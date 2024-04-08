@@ -16,10 +16,11 @@ SN.    Features                                                       Status
 13     Spinner / loading Animation                                     Done
 14     Invite Friends                                                 Pending
 15     Session Management                                             Pending
-16     Dark Mode                                                      Pending
+16     Dark Mode                                                       Done
 17     Automatically UI Changes on Skip / Exit Events                In progress
 18     Logo Update                                                    Pending
 19     Automatic / Enter Key Send                                      Done 
 20     Auto Scroll on Message Recievd/Sent                             Done
-
+21     Live Background Theme sync                                     Pending
+22     Responsive for Every Device
 
