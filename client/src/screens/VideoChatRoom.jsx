@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
 import peer from "../service/peer";
@@ -6,10 +6,13 @@ import { useSocket } from "../context/SocketProvider";
 import Navbar from "../components/NavBar";
 import Spinner from '../components/Spinner';
 import axios from "axios";
+import VideoPermissionModal from "react-modal";
+import { useDarkMode } from '../context/DarkModeContext';
 import "../App.css";
 
 const RoomPage = () => {
   const socket = useSocket();
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
@@ -18,7 +21,9 @@ const RoomPage = () => {
   const [query, setQuery] = useState("");
   const [gifList, setGifList] = useState([]);
   const [isGifModalVisible, setIsGifModalVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); // Open by default
 
+  const messagesEndRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -35,7 +40,7 @@ const RoomPage = () => {
     socket.on("message", (message) => {
       setMessages([...messages, message]);
     });
-
+    scrollToBottom();
     return () => {
       socket.off("message");
     };
@@ -145,6 +150,7 @@ const handleKeyPress = (event) => {
     for (const track of myStream.getTracks()) {
       peer.peer.addTrack(track, myStream);
     }
+    setIsOpen(false); // close Permission Modal
   }, [myStream]);
 
   const handleSkipRoom = () => {
@@ -206,6 +212,10 @@ const handleKeyPress = (event) => {
     });
   }, []);
 
+   const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
 
     socket.on("user:joined", handleUserJoined);
@@ -242,13 +252,25 @@ const handleKeyPress = (event) => {
        <Navbar />
       </div>
       <div className="container">
-        <div className="left">
+        <div className={`${darkMode ? "left darkMode " : "left"}`} >
 
         <div className="row">
             {
             remoteSocketId && (
               <> 
-                {myStream && <button onClick={sendStreams}>Send Video </button>} 
+                {myStream && (
+                  <VideoPermissionModal
+                  isOpen={isOpen}
+                  onRequestClose={() => setIsOpen(false)}
+                  contentLabel="Permission Required"
+                  shouldCloseOnOverlayClick={false} // Prevent closing on overlay click
+                  className="modal-content"
+                  overlayClassName="modal-overlay"
+                >
+                  <p>Please Allow to send Your Video </p>
+                  <button id="allow" onClick={sendStreams}>Allow</button>
+                </VideoPermissionModal>
+                ) } 
               </>
              ) 
             }
@@ -284,7 +306,7 @@ const handleKeyPress = (event) => {
             </div>
         </div>
 
-        <div className="right">
+        <div className={`${darkMode ? "right darkMode " : "right"}`} >
           <div className="chat-container">
             <div className="roomDetail"> 
                {
@@ -311,6 +333,7 @@ const handleKeyPress = (event) => {
                   </p>
                 </div>
               ))}
+               <div ref={messagesEndRef} />
             </div>
           </div>
 

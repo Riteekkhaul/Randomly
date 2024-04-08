@@ -1,0 +1,25 @@
+
+SN.    Features                                                       Status 
+
+1      Interest / Area Based User Matching                            Pending 
+2      Topic / Event / Theme group chat rooms                         Pending
+3      Language Translation                                           Pending
+4      Anonymous Feedback and Ratings                                 Pending
+5      Only Text Chat Option                                           Done 
+6      Consent for IT Terms and Cnditions                             Pending
+7      Age Verification                                                Done
+8      Desclaimer on Sensetive / User data Storage                     Done
+9      GIF / Stickers Reccomendation                                   Done
+10     User Join / Left Events logs                                    Done
+11     User Skip / Exit Functionality                                In progress
+12     Welcome Animation                                              Pending
+13     Spinner / loading Animation                                     Done
+14     Invite Friends                                                 Pending
+15     Session Management                                             Pending
+16     Dark Mode                                                      Pending
+17     Automatically UI Changes on Skip / Exit Events                In progress
+18     Logo Update                                                    Pending
+19     Automatic / Enter Key Send                                      Done 
+20     Auto Scroll on Message Recievd/Sent                             Done
+
+
