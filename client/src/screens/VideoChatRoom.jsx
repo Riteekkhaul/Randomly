@@ -23,11 +23,12 @@ const RoomPage = () => {
   const [isGifModalVisible, setIsGifModalVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(true); // Open by default
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
+  const [isChatVisible, setIsChatVisible] = useState(false);
 
-  const videoWidth = deviceWidth <= 767 ? '320px' : '640px';
-  const videoHeight = deviceWidth <= 767 ? '320px' : '470px';
-  const MyvideoWidth = deviceWidth <= 767 ? '120px' : '150px';
-  const MyvideoHeight = deviceWidth <= 767 ? '120px' : '100px';
+  const videoWidth = deviceWidth <= 767 ? '325px' : '640px';
+  const videoHeight = deviceWidth <= 767 ? '280px' : '470px';
+  const MyvideoWidth = deviceWidth <= 767 ? '320px' : '150px';
+  const MyvideoHeight = deviceWidth <= 767 ? '280px' : '100px';
 
 
   const messagesEndRef = useRef(null);
@@ -41,6 +42,14 @@ const RoomPage = () => {
     // Test if the string matches the pattern
     return pattern.test(str);
   }
+
+  const showChat = () => {
+    setIsChatVisible(true);
+  };
+
+  const hideChat = () => {
+    setIsChatVisible(false);
+  };
 
   useEffect(() => {
     // Listen for incoming messages
@@ -303,18 +312,6 @@ const handleKeyPress = (event) => {
             }
           </div>
 
-          {myStream && (
-            <div className="stream-container">
-              <ReactPlayer
-                className="video-stream local-stream"
-                playing
-                muted
-                height={MyvideoHeight}
-                width={MyvideoWidth}
-                url={myStream}
-              />
-            </div>
-          )}
             <div className="stream-container">
             {remoteStream? (
               <ReactPlayer
@@ -330,10 +327,24 @@ const handleKeyPress = (event) => {
                 </div>
               )}
             </div>
+
+            {myStream && (
+            <div className="stream-container">
+              <ReactPlayer
+                className="video-stream local-stream"
+                playing
+                muted
+                height={MyvideoHeight}
+                width={MyvideoWidth}
+                url={myStream}
+                onClick={hideChat}
+              />
+            </div>
+          )}
         </div>
 
         <div className={`${darkMode ? "right darkMode " : "right"}`} >
-          <div className="chat-container">
+          <div className={`chat-container ${isChatVisible ? '' : 'hide'}`}>
             <div className="roomDetail"> 
                {
                  remoteSocketId?(
@@ -382,7 +393,7 @@ const handleKeyPress = (event) => {
             </button>
           </div>
         </div>
-    
+        
         {
         isGifModalVisible &&(
           <div className="gifModal">
@@ -426,7 +437,9 @@ const handleKeyPress = (event) => {
         </div>
         )
       }
-
+      {
+        (deviceWidth <= 767)&&(<div className="openChat" onClick={showChat} ></div>)
+      }
       </div>
     </>
   );
