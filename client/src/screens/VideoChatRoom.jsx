@@ -25,10 +25,10 @@ const RoomPage = () => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
   const [isChatVisible, setIsChatVisible] = useState(false);
 
-  const videoWidth = deviceWidth <= 767 ? '325px' : '640px';
-  const videoHeight = deviceWidth <= 767 ? '280px' : '470px';
-  const MyvideoWidth = deviceWidth <= 767 ? '320px' : '150px';
-  const MyvideoHeight = deviceWidth <= 767 ? '280px' : '100px';
+  const videoWidth = deviceWidth <= 1080 ? '380px' : '640px';
+  const videoHeight = deviceWidth <= 1080 ? '280px' : '470px';
+  const MyvideoWidth = deviceWidth <= 1080 ? '380px' : '150px';
+  const MyvideoHeight = deviceWidth <= 1080 ? '280px' : '100px';
 
 
   const messagesEndRef = useRef(null);
